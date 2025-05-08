@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.edu.pg.publication_system.auth.RegisterRequest;
 import pl.edu.pg.publication_system.auth.Role;
 
 import java.time.LocalDate;
@@ -29,6 +30,17 @@ public class Account implements UserDetails {
 
         this.verified = true;
         this.level = level;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Account(RegisterRequest register, String hashedPassword) {
+        this.username = register.username();
+        this.password = hashedPassword;
+        this.role = Role.USER;
+        this.birth = register.birth();
+
+        this.verified = true;
+        this.level = SubscriptionLevel.FREE;
         this.createdAt = LocalDateTime.now();
     }
 

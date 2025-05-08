@@ -22,7 +22,7 @@ import pl.edu.pg.publication_system.account.SubscriptionLevel;
 import java.time.LocalDate;
 
 @AllArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -35,16 +35,20 @@ public class SecurityConfig {
             .authorizeHttpRequests((authorize) -> {
                 authorize
                     .requestMatchers("/h2-console/**").permitAll()
-                    .requestMatchers("/login", "/register").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/article").permitAll()
                     .requestMatchers(HttpMethod.GET, "/article/admin").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/article").hasRole("EDITOR")
                     .anyRequest().authenticated();
             })
-            .csrf((csrf) -> csrf.ignoringRequestMatchers("/h2-console/**"))
+            .csrf((csrf) -> {
+                csrf.ignoringRequestMatchers("/h2-console/**")
+                    .ignoringRequestMatchers("/auth/**");
+            })
             .headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .formLogin(FormLoginConfigurer::disable)
-            .httpBasic(Customizer.withDefaults());
+            .httpBasic(Customizer.withDefaults())
+            .authenticationProvider(authenticationProvider());
 
         return http.build();
     }
@@ -70,6 +74,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 }
