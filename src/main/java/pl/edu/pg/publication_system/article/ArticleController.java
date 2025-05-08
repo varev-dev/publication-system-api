@@ -12,6 +12,11 @@ public class ArticleController {
     public String helloWorld() {
         return "Hello World";
     }
-    
+
+    @GetMapping(path = "/admin")
+    public String admin() {
+        return "Admin";
+    }
+
 }
 
