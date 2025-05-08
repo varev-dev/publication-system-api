@@ -21,13 +21,14 @@ public class Account implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Account(String username, String password, Role role, LocalDate birth) {
+    public Account(String username, String password, Role role, LocalDate birth, SubscriptionLevel level) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.birth = birth;
 
         this.verified = true;
+        this.level = level;
         this.createdAt = LocalDateTime.now();
     }
 
