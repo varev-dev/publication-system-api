@@ -23,12 +23,17 @@ public class AuthController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        if (accountRepository.existsByUsername(request.username())) {
+        if (accountRepository.existsByUsernameIgnoreCase(request.username())) {
             return ResponseEntity.badRequest().body("Username already in use");
         }
 
         Account account = new Account(request, passwordEncoder.encode(request.password()));
-        accountRepository.save(account);
+
+        try {
+            accountRepository.save(account);
+        }  catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
 
         return ResponseEntity.ok().build();
     }
