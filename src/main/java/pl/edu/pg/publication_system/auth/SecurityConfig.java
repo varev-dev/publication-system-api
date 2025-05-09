@@ -36,6 +36,7 @@ public class SecurityConfig {
                 authorize
                     .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/account/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/article").permitAll()
                     .requestMatchers(HttpMethod.GET, "/article/admin").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/article").hasRole("EDITOR")
@@ -57,9 +58,9 @@ public class SecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         Account admin = new Account("admin", passwordEncoder().encode("sa"),
-                Role.ADMIN, LocalDate.of(2000, 1, 1), SubscriptionLevel.PREMIUM);
+                Role.ADMIN, LocalDate.of(2000, 1, 1), SubscriptionLevel.PREMIUM, true);
         Account user = new Account("user", passwordEncoder().encode("sa"),
-                Role.USER, LocalDate.of(2000, 1, 1), SubscriptionLevel.FREE);
+                Role.USER, LocalDate.of(2000, 1, 1), SubscriptionLevel.FREE, true);
 
         if (userDetailsService instanceof AccountService service) {
             service.save(admin);

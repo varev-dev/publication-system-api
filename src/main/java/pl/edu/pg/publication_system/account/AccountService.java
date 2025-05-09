@@ -6,9 +6,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class AccountService implements UserDetailsService {
+
     private final AccountRepository accountRepository;
 
     public void save(Account account) {
@@ -20,4 +23,11 @@ public class AccountService implements UserDetailsService {
         return accountRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    public List<Account> getAccounts() {
+        return accountRepository.findAll();
+    }
+
+    public List<AccountPublicDetailsDto> getAccountsPublicDetails() {
+        return accountRepository.findAll().stream().map(AccountMapper::toAccountPublicDetailsDto).toList();
+    }
 }
