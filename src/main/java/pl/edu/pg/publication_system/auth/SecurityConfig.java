@@ -35,11 +35,16 @@ public class SecurityConfig {
             .authorizeHttpRequests((authorize) -> {
                 authorize
                     .requestMatchers("/h2-console/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+
+                    .requestMatchers(HttpMethod.POST, "/auth/register").anonymous()
+                    .requestMatchers(HttpMethod.GET, "/auth/check").authenticated()
+
                     .requestMatchers(HttpMethod.GET, "/account/**").permitAll()
+
                     .requestMatchers(HttpMethod.GET, "/article").permitAll()
                     .requestMatchers(HttpMethod.GET, "/article/admin").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/article").hasRole("EDITOR")
+
                     .anyRequest().authenticated();
             })
             .csrf((csrf) -> {
