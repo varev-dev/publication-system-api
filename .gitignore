@@ -1,11 +1,4 @@
 HELP.md
-.gitattributes
-
-# Maven
-.mvn
-!.mvn/wrapper/maven-wrapper.jar
-mvnw
-mvnw.cmd
 
 # Target
 target/
