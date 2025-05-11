@@ -1,4 +1,4 @@
 package pl.edu.pg.publication_system.account;
 
-public record AccountSummaryDto(String username) {
+public record AccountSummaryDTO(String username) {
 }

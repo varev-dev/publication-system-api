@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.publication_system.account.Account;
 import pl.edu.pg.publication_system.account.AccountMapper;
 import pl.edu.pg.publication_system.account.AccountRepository;
-import pl.edu.pg.publication_system.account.AccountService;
 
 @RequestMapping(path = "/auth")
 @RestController
@@ -44,7 +43,7 @@ public class AuthController {
     @GetMapping(path = "/check")
     public ResponseEntity<?> check(Authentication auth) {
         Account account = (Account) auth.getPrincipal();
-        return ResponseEntity.ok().body(AccountMapper.toAccountMinimalDto(account));
+        return ResponseEntity.ok().body(AccountMapper.toSummaryDTO(account));
     }
 
 }
