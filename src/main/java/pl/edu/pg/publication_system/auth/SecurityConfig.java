@@ -9,8 +9,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,28 +34,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((authorize) -> {
+            .authorizeHttpRequests(authorize -> {
                 authorize
                     .requestMatchers("/h2-console/**").permitAll()
 
                     .requestMatchers(HttpMethod.POST, "/auth/register").anonymous()
                     .requestMatchers(HttpMethod.GET, "/auth/check").authenticated()
 
-                    .requestMatchers(HttpMethod.GET, "/account/**").permitAll()
-
-                    .requestMatchers(HttpMethod.GET, "/article").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/article/admin").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/article").hasRole("EDITOR")
+                    .requestMatchers(HttpMethod.GET, "/accounts").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/accounts/**").authenticated()
+                    .requestMatchers(HttpMethod.PATCH, "/accounts/**").authenticated()
 
                     .anyRequest().authenticated();
             })
-            .csrf((csrf) -> {
-                csrf.ignoringRequestMatchers("/h2-console/**")
-                    .ignoringRequestMatchers("/auth/**");
+            .csrf(AbstractHttpConfigurer::disable)
+            .headers((headers) -> {
+                headers
+                    .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                    .cacheControl(HeadersConfigurer.CacheControlConfig::disable);
             })
-            .headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .formLogin(FormLoginConfigurer::disable)
             .httpBasic(Customizer.withDefaults())
+            .sessionManagement(session ->
+                session
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
             .authenticationProvider(authenticationProvider());
 
         return http.build();
