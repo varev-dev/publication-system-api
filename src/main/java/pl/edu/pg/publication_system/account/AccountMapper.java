@@ -1,14 +1,24 @@
 package pl.edu.pg.publication_system.account;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class AccountMapper {
-    public static AccountPublicDetailsDto toAccountPublicDetailsDto(Account account) {
-        return new AccountPublicDetailsDto(
-                account.getUsername(), account.isVerified(), account.getRole().name(),
-                account.getLevel().name(), account.isAdult(), account.getCreatedAt()
+    public static AccountPrivateDetailsDTO toAccountPrivateDetailsDTO(Account account) {
+        return new AccountPrivateDetailsDTO(
+                account.getUsername(), account.isVerified(), account.getRole().name(), account.getLevel().name(),
+                account.getBirth(), account.getCreatedAt()
         );
     }
 
-    public static AccountMinimalDto toAccountMinimalDto(Account account) {
-        return new AccountMinimalDto(account.getUsername());
+    public static AccountPublicDetailsDTO toAccountPublicDetailsDTO(Account account) {
+        return new AccountPublicDetailsDTO(
+                account.getUsername(), account.isVerified(), account.getRole().name(), account.getLevel().name(),
+                account.isAdult(), Period.between(LocalDate.from(account.getCreatedAt()), LocalDate.now())
+        );
+    }
+
+    public static AccountSummaryDTO toSummaryDTO(Account account) {
+        return new AccountSummaryDTO(account.getUsername());
     }
 }

@@ -1,12 +1,13 @@
 package pl.edu.pg.publication_system.account;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@RequestMapping(path = "/account")
+@RequestMapping(path = "/accounts")
 @RestController
 public class AccountController {
 
@@ -16,8 +17,36 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @GetMapping(path = "/{username}")
+    public ResponseEntity<AccountPublicDetailsDTO> getAccountDetails(@PathVariable String username) {
+        Optional<AccountPublicDetailsDTO> details = accountService.getAccountPublicDetails(username);
+
+        return details.map(accountPublicDetailsDTO -> ResponseEntity.ok().body(accountPublicDetailsDTO))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @GetMapping
-    public List<AccountPublicDetailsDto> getAccountsPublicDetails() {
+    public List<AccountSummaryDTO> getAccountsSummaries() {
+        return accountService.getAccountsSummaries();
+    }
+
+    @GetMapping(path = "/details")
+    public List<AccountPublicDetailsDTO> getAccountsPublicDetails() {
         return accountService.getAccountsPublicDetails();
     }
+
+    @PreAuthorize("#username == authentication.name or hasRole('ADMIN')")
+    @PatchMapping(path = "/{username}")
+    public ResponseEntity<AccountPrivateDetailsDTO> updateAccount(
+            @PathVariable String username,
+            @RequestBody AccountUpdateDTO updateDTO) {
+
+        try {
+            Account account = accountService.updateAccount(username, updateDTO);
+            return ResponseEntity.ok().body(AccountMapper.toAccountPrivateDetailsDTO(account));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
