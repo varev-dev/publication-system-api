@@ -1,4 +1,9 @@
-package pl.edu.pg.publication_system.account;
+package pl.edu.pg.publication_system.account.mapper;
+
+import pl.edu.pg.publication_system.account.dto.AccountPrivateDetailsDTO;
+import pl.edu.pg.publication_system.account.dto.AccountPublicDetailsDTO;
+import pl.edu.pg.publication_system.account.dto.AccountSummaryDTO;
+import pl.edu.pg.publication_system.account.model.Account;
 
 import java.time.LocalDate;
 import java.time.Period;

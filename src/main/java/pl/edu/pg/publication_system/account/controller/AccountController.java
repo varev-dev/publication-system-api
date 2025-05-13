@@ -1,8 +1,15 @@
-package pl.edu.pg.publication_system.account;
+package pl.edu.pg.publication_system.account.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.pg.publication_system.account.dto.AccountPrivateDetailsDTO;
+import pl.edu.pg.publication_system.account.dto.AccountPublicDetailsDTO;
+import pl.edu.pg.publication_system.account.dto.AccountSummaryDTO;
+import pl.edu.pg.publication_system.account.dto.AccountUpdateDTO;
+import pl.edu.pg.publication_system.account.mapper.AccountMapper;
+import pl.edu.pg.publication_system.account.model.Account;
+import pl.edu.pg.publication_system.account.service.AccountService;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package pl.edu.pg.publication_system.auth;
+package pl.edu.pg.publication_system.auth.dto;
 
 import java.time.LocalDate;
 

@@ -1,10 +1,16 @@
-package pl.edu.pg.publication_system.account;
+package pl.edu.pg.publication_system.account.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.edu.pg.publication_system.account.repository.AccountRepository;
+import pl.edu.pg.publication_system.account.dto.AccountPublicDetailsDTO;
+import pl.edu.pg.publication_system.account.dto.AccountSummaryDTO;
+import pl.edu.pg.publication_system.account.dto.AccountUpdateDTO;
+import pl.edu.pg.publication_system.account.mapper.AccountMapper;
+import pl.edu.pg.publication_system.account.model.Account;
 
 import java.util.List;
 import java.util.Optional;

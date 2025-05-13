@@ -1,4 +1,4 @@
-package pl.edu.pg.publication_system.auth;
+package pl.edu.pg.publication_system.auth.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,9 +17,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import pl.edu.pg.publication_system.account.Account;
-import pl.edu.pg.publication_system.account.AccountService;
-import pl.edu.pg.publication_system.account.SubscriptionLevel;
+import pl.edu.pg.publication_system.account.model.Account;
+import pl.edu.pg.publication_system.account.service.AccountService;
+import pl.edu.pg.publication_system.account.model.SubscriptionLevel;
+import pl.edu.pg.publication_system.auth.model.Role;
 
 import java.time.LocalDate;
 

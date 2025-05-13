@@ -1,4 +1,4 @@
-package pl.edu.pg.publication_system.account;
+package pl.edu.pg.publication_system.account.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,8 +6,8 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.edu.pg.publication_system.auth.RegisterRequest;
-import pl.edu.pg.publication_system.auth.Role;
+import pl.edu.pg.publication_system.auth.dto.RegisterRequest;
+import pl.edu.pg.publication_system.auth.model.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

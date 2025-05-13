@@ -1,4 +1,4 @@
-package pl.edu.pg.publication_system.account;
+package pl.edu.pg.publication_system.account.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
