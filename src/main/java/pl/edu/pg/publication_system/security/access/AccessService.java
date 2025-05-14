@@ -22,11 +22,11 @@ public class AccessService {
     public boolean canViewArticle(UUID articleId, Account user) {
         Optional<Article> articleOpt = articleRepository.findById(articleId);
 
-        if (articleOpt.isEmpty())
-            return false;
+        return articleOpt.filter(article -> canViewArticle(article, user)).isPresent();
 
-        Article article = articleOpt.get();
+    }
 
+    public boolean canViewArticle(Article article, Account user) {
         if (article.hasRequiredAge() && user.getUserAge() < article.getRequiredAge())
             return false;
 

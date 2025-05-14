@@ -33,7 +33,7 @@ public class ArticleController {
 
     @GetMapping
     public List<Article> getArticlesFromAuthor(@RequestParam(name = "author") String author) {
-
+        return articleService.getArticlesWithAuthor(author);
     }
 
     @PostMapping
