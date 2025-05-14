@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.edu.pg.publication_system.article.model.Article;
 import pl.edu.pg.publication_system.auth.dto.RegisterRequest;
 import pl.edu.pg.publication_system.auth.model.Role;
 
@@ -38,6 +39,9 @@ public class Account implements UserDetails {
 
     private LocalDate birth;
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "author_id")
+    List<Article> articles;
 
     public Account(String username, String password, Role role, LocalDate birth, SubscriptionLevel level, boolean verified) {
         this.username = username;
@@ -77,8 +81,8 @@ public class Account implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    public boolean isAdult() {
-        return Period.between(birth, LocalDate.now()).getYears() >= 18;
+    public int getUserAge() {
+        return Period.between(birth, LocalDate.now()).getYears();
     }
 
     public long getAccountAgeInHours() {
