@@ -1,4 +1,4 @@
-package pl.edu.pg.publication_system.auth.config;
+package pl.edu.pg.publication_system.security.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
