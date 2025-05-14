@@ -46,6 +46,10 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/accounts/**").authenticated()
                     .requestMatchers(HttpMethod.PATCH, "/accounts/**").authenticated()
 
+                    .requestMatchers(HttpMethod.GET, "/articles").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/articles/**").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/articles/**").hasRole("EDITOR")
+
                     .anyRequest().authenticated();
             })
             .csrf(AbstractHttpConfigurer::disable)

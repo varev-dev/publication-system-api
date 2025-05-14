@@ -2,13 +2,11 @@ package pl.edu.pg.publication_system.article.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.publication_system.article.model.Article;
 import pl.edu.pg.publication_system.article.service.ArticleService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,4 +30,20 @@ public class ArticleController {
 
         return ResponseEntity.ok(articleOpt.get());
     }
+
+    @GetMapping
+    public List<Article> getArticlesFromAuthor(@RequestParam(name = "author") String author) {
+
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createArticle(@RequestBody Article article) {
+        article = articleService.createArticle(article);
+
+        if (article == null)
+            return ResponseEntity.badRequest().build();
+
+        return ResponseEntity.ok(article);
+    }
+
 }
