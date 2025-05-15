@@ -22,13 +22,10 @@ public class ArticleController {
 
     @PreAuthorize("@accessService.canViewArticle(id, authentication.principal)")
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getArticle(@PathVariable UUID id) {
+    public ResponseEntity<Article> getArticle(@PathVariable UUID id) {
         Optional<Article> articleOpt = articleService.getArticle(id);
 
-        if (articleOpt.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(articleOpt.get());
+        return articleOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
@@ -37,7 +34,7 @@ public class ArticleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createArticle(@RequestBody Article article) {
+    public ResponseEntity<Article> createArticle(@RequestBody Article article) {
         article = articleService.createArticle(article);
 
         if (article == null)

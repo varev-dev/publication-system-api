@@ -2,7 +2,6 @@ package pl.edu.pg.publication_system.article.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.publication_system.account.model.Account;
 import pl.edu.pg.publication_system.account.repository.AccountRepository;

@@ -1,0 +1,38 @@
+package pl.edu.pg.publication_system.article.mapper;
+
+import pl.edu.pg.publication_system.article.dto.ArticleCreationRequest;
+import pl.edu.pg.publication_system.article.dto.ArticleDetailsDTO;
+import pl.edu.pg.publication_system.article.dto.ArticleSummaryDTO;
+import pl.edu.pg.publication_system.article.model.Article;
+import pl.edu.pg.publication_system.article.model.TimeUnit;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
+public class ArticleMapper {
+
+    public Article fromArticleCreationRequest(ArticleCreationRequest request) {
+        Duration duration = durationMapper(request.requiredAccountAge(), request.timeUnit());
+
+        return new Article(request.title(), request.content(), request.requiredAge(), duration);
+    }
+
+    public ArticleSummaryDTO toArticleSummaryDTO(Article article) {
+        return new ArticleSummaryDTO(article.getTitle(), article.getAuthor().getUsername(), article.getCreatedAt());
+    }
+
+    public ArticleDetailsDTO toArticleDetailsDTO(Article article) {
+        return new ArticleDetailsDTO(article.getTitle(), article.getContent(), article.getAuthor().getUsername(), article.getCreatedAt());
+    }
+
+    private Duration durationMapper(int amount, TimeUnit unit) {
+        return switch (unit) {
+            case HOUR -> Duration.ofHours(amount);
+            case DAY -> Duration.ofDays(amount);
+            case WEEK -> Duration.of(amount, ChronoUnit.WEEKS);
+            case MONTH -> Duration.of(amount, ChronoUnit.MONTHS);
+            case YEAR -> Duration.of(amount, ChronoUnit.YEARS);
+        };
+    }
+
+}

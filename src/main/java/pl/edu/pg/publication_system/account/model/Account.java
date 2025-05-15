@@ -21,6 +21,8 @@ import java.util.List;
 @Data
 @Entity
 public class Account implements UserDetails {
+    private static final int LEGAL_ADULT_AGE = 18;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -79,6 +81,10 @@ public class Account implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    public boolean isAdult() {
+        return getUserAge() >= LEGAL_ADULT_AGE;
     }
 
     public int getUserAge() {
