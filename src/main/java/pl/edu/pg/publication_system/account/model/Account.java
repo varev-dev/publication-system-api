@@ -42,7 +42,7 @@ public class Account implements UserDetails {
     private LocalDate birth;
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "author_id")
+    @OneToMany
     List<Article> articles;
 
     public Account(String username, String password, Role role, LocalDate birth, SubscriptionLevel level, boolean verified) {

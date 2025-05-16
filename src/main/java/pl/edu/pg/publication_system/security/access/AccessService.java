@@ -1,14 +1,13 @@
 package pl.edu.pg.publication_system.security.access;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.pg.publication_system.account.model.Account;
 import pl.edu.pg.publication_system.article.model.Article;
 import pl.edu.pg.publication_system.article.repository.ArticleRepository;
 
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component("accessService")
 public class AccessService {
@@ -19,7 +18,7 @@ public class AccessService {
         this.articleRepository = articleRepository;
     }
 
-    public boolean canViewArticle(UUID articleId, Account user) {
+    public boolean canViewArticle(Long articleId, Account user) {
         Optional<Article> articleOpt = articleRepository.findById(articleId);
 
         return articleOpt.filter(article -> canViewArticle(article, user)).isPresent();
@@ -30,7 +29,7 @@ public class AccessService {
         if (article.hasRequiredAge() && user.getUserAge() < article.getRequiredAge())
             return false;
 
-        if (article.hasRequiredAccountAge() && user.getAccountAgeInHours() < article.getRequiredAccountAge().get(ChronoUnit.HOURS))
+        if (article.hasRequiredAccountAge() && user.getAccountAgeInHours() < article.getRequiredAccountAge().toHours())
             return false;
 
         return true;
