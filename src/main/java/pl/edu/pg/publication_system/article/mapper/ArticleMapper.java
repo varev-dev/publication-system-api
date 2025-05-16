@@ -1,5 +1,6 @@
 package pl.edu.pg.publication_system.article.mapper;
 
+import pl.edu.pg.publication_system.account.model.Account;
 import pl.edu.pg.publication_system.article.dto.ArticleCreationRequest;
 import pl.edu.pg.publication_system.article.dto.ArticleDetailsDTO;
 import pl.edu.pg.publication_system.article.dto.ArticleSummaryDTO;
@@ -11,10 +12,10 @@ import java.time.temporal.ChronoUnit;
 
 public class ArticleMapper {
 
-    public static Article fromArticleCreationRequest(ArticleCreationRequest request) {
+    public static Article fromArticleCreationRequest(ArticleCreationRequest request, Account editor){
         Duration duration = durationMapper(request.requiredAccountAge(), request.timeUnit());
 
-        return new Article(request.title(), request.content(), request.requiredAge(), duration);
+        return new Article(editor, request.title(), request.content(), request.requiredAge(), duration);
     }
 
     public static ArticleSummaryDTO toArticleSummaryDTO(Article article) {
@@ -27,6 +28,7 @@ public class ArticleMapper {
 
     private static Duration durationMapper(int amount, TimeUnit unit) {
         return switch (unit) {
+            case NULL -> Duration.ZERO;
             case HOUR -> Duration.ofHours(amount);
             case DAY -> Duration.ofDays(amount);
             case WEEK -> Duration.of(amount, ChronoUnit.WEEKS);

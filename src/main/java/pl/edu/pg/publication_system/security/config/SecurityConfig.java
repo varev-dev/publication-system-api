@@ -74,13 +74,17 @@ public class SecurityConfig {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         Account admin = new Account("admin", passwordEncoder().encode("sa"),
                 Role.ADMIN, LocalDate.of(2000, 1, 1), SubscriptionLevel.PREMIUM, true);
+        Account editor = new Account("editor", passwordEncoder().encode("sa"),
+                Role.EDITOR, LocalDate.of(2000, 1, 1), SubscriptionLevel.FREE, true);
         Account user = new Account("user", passwordEncoder().encode("sa"),
                 Role.USER, LocalDate.of(2000, 1, 1), SubscriptionLevel.FREE, true);
 
         if (userDetailsService instanceof AccountService service) {
             service.save(admin);
+            service.save(editor);
             service.save(user);
         }
+
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;

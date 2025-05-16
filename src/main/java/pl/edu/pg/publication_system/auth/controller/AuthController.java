@@ -1,6 +1,5 @@
 package pl.edu.pg.publication_system.auth.controller;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,12 +15,10 @@ public class AuthController {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ApplicationContext applicationContext;
 
-    public AuthController(AccountRepository accountRepository, PasswordEncoder passwordEncoder, ApplicationContext applicationContext) {
+    public AuthController(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
-        this.applicationContext = applicationContext;
     }
 
     @PostMapping(path = "/register")

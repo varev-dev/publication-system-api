@@ -35,7 +35,8 @@ public class Article {
     private int requiredAge = 0;
     private Duration requiredAccountAge;
 
-    public Article(@NotNull String title, @NotNull String content, int requiredAge, Duration requiredAccountAge) {
+    public Article(@NotNull Account author, @NotNull String title, @NotNull String content, int requiredAge, Duration requiredAccountAge) {
+        this.author = author;
         this.title = title;
         this.content = content;
         this.requiredAge = max(requiredAge, 0);
@@ -47,7 +48,7 @@ public class Article {
     }
 
     public boolean hasRequiredAccountAge() {
-        return requiredAccountAge != null;
+        return !requiredAccountAge.equals(Duration.ZERO);
     }
 
 }
