@@ -1,10 +1,15 @@
 package pl.edu.pg.publication_system.article.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.publication_system.account.model.Account;
 import pl.edu.pg.publication_system.account.repository.AccountRepository;
+import pl.edu.pg.publication_system.article.dto.ArticleSummaryDTO;
+import pl.edu.pg.publication_system.article.mapper.ArticleMapper;
 import pl.edu.pg.publication_system.article.model.Article;
 import pl.edu.pg.publication_system.article.repository.ArticleRepository;
 import pl.edu.pg.publication_system.security.access.AccessService;
@@ -26,8 +31,21 @@ public class ArticleService {
         this.accessService = accessService;
     }
 
-    public Optional<Article> getArticle(UUID id) {
+    public Optional<Article> getArticle(long id) {
         return articleRepository.findById(id);
+    }
+
+    public List<ArticleSummaryDTO> findArticles(String author, Integer requiredAge, Pageable pageable) {
+        Specification<Article> spec = Specification.where(null);
+
+        if (author != null && !author.isEmpty())
+            spec.and((root, _, cb) -> cb.equal(root.get("author"), author));
+
+        if (requiredAge != null)
+            spec.and((root, _, cb) -> cb.equal(root.get("requiredAge"), requiredAge));
+
+        Page<Article> page = articleRepository.findAll(spec, pageable);
+        return page.stream().map(ArticleMapper::toArticleSummaryDTO).toList();
     }
 
     public List<Article> getArticlesWithAuthor(String author) {
@@ -44,6 +62,10 @@ public class ArticleService {
     }
 
     public Article createArticle(Article article) {
-        return articleRepository.save(article);
+        try {
+            return articleRepository.save(article);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
