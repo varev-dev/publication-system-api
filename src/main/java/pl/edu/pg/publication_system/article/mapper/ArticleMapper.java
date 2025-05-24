@@ -26,14 +26,14 @@ public class ArticleMapper {
         return new ArticleDetailsDTO(article.getTitle(), article.getContent(), article.getAuthor().getUsername(), article.getCreatedAt());
     }
 
-    private static Duration durationMapper(int amount, TimeUnit unit) {
+    public static Duration durationMapper(int amount, TimeUnit unit) {
         return switch (unit) {
             case NULL -> Duration.ZERO;
             case HOUR -> Duration.ofHours(amount);
             case DAY -> Duration.ofDays(amount);
-            case WEEK -> Duration.of(amount, ChronoUnit.WEEKS);
-            case MONTH -> Duration.of(amount, ChronoUnit.MONTHS);
-            case YEAR -> Duration.of(amount, ChronoUnit.YEARS);
+            case WEEK -> Duration.ofDays(7L * amount);
+            case MONTH -> Duration.ofDays(31L * amount);
+            case YEAR -> Duration.ofDays(365L * amount);
         };
     }
 
