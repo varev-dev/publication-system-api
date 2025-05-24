@@ -41,7 +41,7 @@ public class AuthController {
     @GetMapping(path = "/check")
     public ResponseEntity<?> check(Authentication auth) {
         Account account = (Account) auth.getPrincipal();
-        return ResponseEntity.ok().body(AccountMapper.toSummaryDTO(account));
+        return ResponseEntity.ok().body(AccountMapper.toAccountPrivateDetailsDTO(account));
     }
 
 }
