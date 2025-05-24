@@ -25,3 +25,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: true
+
+cors:
+    allowed:
+      origins: http://localhost:3000
