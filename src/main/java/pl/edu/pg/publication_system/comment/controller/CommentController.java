@@ -4,12 +4,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.publication_system.account.model.Account;
+import pl.edu.pg.publication_system.comment.dto.CommentCreationRequest;
 import pl.edu.pg.publication_system.comment.model.Comment;
 import pl.edu.pg.publication_system.comment.service.CommentService;
 
 import java.util.List;
 
-@RequestMapping(path = "/article/{articleId}/comments")
+@RequestMapping(path = "/articles/{articleId}/comments")
 @RestController
 public class CommentController {
 
@@ -32,11 +33,11 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<?> addComment(
             @PathVariable("articleId") Long articleId,
-            @RequestBody String content,
+            @RequestBody CommentCreationRequest content,
             Authentication authentication) {
 
         Account author = (Account) authentication.getPrincipal();
-        Comment comment = commentService.save(author, articleId, content);
+        Comment comment = commentService.save(author, articleId, content.content());
 
         if (comment == null)
             return ResponseEntity.badRequest().build();

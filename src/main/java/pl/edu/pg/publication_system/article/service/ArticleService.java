@@ -1,5 +1,6 @@
 package pl.edu.pg.publication_system.article.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,7 +33,10 @@ public class ArticleService {
     }
 
     public Optional<Article> getArticle(long id) {
-        return articleRepository.findById(id);
+        Article article = articleRepository.findById(id).orElseThrow();
+        Hibernate.initialize(article.getComments());
+
+        return Optional.of(article);
     }
 
     public List<ArticleSummaryDTO> findArticles(String author, Integer requiredAge, Pageable pageable) {

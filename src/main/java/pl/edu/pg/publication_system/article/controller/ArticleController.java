@@ -1,5 +1,6 @@
 package pl.edu.pg.publication_system.article.controller;
 
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,8 @@ import pl.edu.pg.publication_system.article.dto.ArticleSummaryDTO;
 import pl.edu.pg.publication_system.article.mapper.ArticleMapper;
 import pl.edu.pg.publication_system.article.model.Article;
 import pl.edu.pg.publication_system.article.service.ArticleService;
+import pl.edu.pg.publication_system.comment.model.Comment;
+import pl.edu.pg.publication_system.comment.service.CommentService;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,17 +27,19 @@ import java.util.UUID;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final CommentService commentService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, CommentService commentService) {
         this.articleService = articleService;
+        this.commentService = commentService;
     }
 
     @PreAuthorize("@accessService.canViewArticle(#id, authentication.principal) || hasAnyRole('EDITOR', 'ADMIN')")
     @GetMapping(path = "/{id}")
-    public ResponseEntity<ArticleDetailsDTO> getArticle(@PathVariable String id) {
-        Optional<Article> articleOpt = articleService.getArticle(Long.parseLong(id));
+    public ResponseEntity<ArticleDetailsDTO> getArticle(@PathVariable Long id) {
+        Article article = articleService.getArticle(id).orElseThrow();
 
-        return articleOpt.map(ArticleMapper::toArticleDetailsDTO).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(ArticleMapper.toArticleDetailsDTO(article));
     }
 
     @GetMapping

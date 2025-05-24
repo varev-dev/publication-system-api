@@ -6,9 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pg.publication_system.account.model.Account;
+import pl.edu.pg.publication_system.comment.model.Comment;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static java.lang.Integer.max;
 
@@ -23,6 +25,9 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Account author;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
 
     @NotNull
     @Column(unique = true)

@@ -6,7 +6,6 @@ import pl.edu.pg.publication_system.account.model.Account;
 import pl.edu.pg.publication_system.article.model.Article;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpecificationExecutor<Article> {
 
