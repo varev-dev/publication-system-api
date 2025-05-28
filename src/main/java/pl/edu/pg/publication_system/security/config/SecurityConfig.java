@@ -23,6 +23,9 @@ import pl.edu.pg.publication_system.account.model.SubscriptionLevel;
 import pl.edu.pg.publication_system.auth.model.Role;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 @AllArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true)
@@ -49,8 +52,8 @@ public class SecurityConfig {
 
                     .requestMatchers(HttpMethod.GET, "/articles").permitAll()
                     .requestMatchers(HttpMethod.GET, "/articles/**").authenticated()
-                    .requestMatchers(HttpMethod.POST, "/articles/**").hasRole("EDITOR")
-
+                    .requestMatchers(HttpMethod.POST, "/articles").hasRole("EDITOR")
+                    .requestMatchers(HttpMethod.POST, "/articles/*/comments/**").hasAnyRole("USER", "EDITOR")
                     .anyRequest().authenticated();
             })
             .csrf(AbstractHttpConfigurer::disable)
@@ -79,6 +82,7 @@ public class SecurityConfig {
                 Role.EDITOR, LocalDate.of(2000, 1, 1), SubscriptionLevel.FREE, true);
         Account user = new Account("user", passwordEncoder().encode("sa"),
                 Role.USER, LocalDate.of(2000, 1, 1), SubscriptionLevel.FREE, true);
+        user.setCreatedAt(LocalDateTime.now().minusYears(2));
 
         if (userDetailsService instanceof AccountService service) {
             service.save(admin);

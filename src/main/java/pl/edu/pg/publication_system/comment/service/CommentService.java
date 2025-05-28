@@ -34,4 +34,8 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    public void removeComment(Long id) {
+        var commentOpt = commentRepository.findById(id);
+        commentOpt.ifPresent(commentRepository::delete);
+    }
 }
