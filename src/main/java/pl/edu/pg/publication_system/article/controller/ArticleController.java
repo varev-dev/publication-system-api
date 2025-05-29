@@ -1,6 +1,5 @@
 package pl.edu.pg.publication_system.article.controller;
 
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,23 +14,17 @@ import pl.edu.pg.publication_system.article.dto.ArticleSummaryDTO;
 import pl.edu.pg.publication_system.article.mapper.ArticleMapper;
 import pl.edu.pg.publication_system.article.model.Article;
 import pl.edu.pg.publication_system.article.service.ArticleService;
-import pl.edu.pg.publication_system.comment.model.Comment;
-import pl.edu.pg.publication_system.comment.service.CommentService;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @RequestMapping(path = "/articles")
 @RestController
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final CommentService commentService;
 
-    public ArticleController(ArticleService articleService, CommentService commentService) {
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-        this.commentService = commentService;
     }
 
     @PreAuthorize("@accessService.canViewArticle(#id, authentication.principal) || hasAnyRole('EDITOR', 'ADMIN')")

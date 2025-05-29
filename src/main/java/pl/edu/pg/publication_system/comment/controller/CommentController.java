@@ -1,6 +1,7 @@
 package pl.edu.pg.publication_system.comment.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.publication_system.account.model.Account;
@@ -30,6 +31,7 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
+    @PreAuthorize("@accessService.canViewArticle(#articleId, authentication.principal)")
     @PostMapping
     public ResponseEntity<?> addComment(
             @PathVariable("articleId") Long articleId,
