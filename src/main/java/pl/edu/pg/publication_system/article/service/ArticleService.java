@@ -17,7 +17,6 @@ import pl.edu.pg.publication_system.security.access.AccessService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ArticleService {
@@ -43,10 +42,10 @@ public class ArticleService {
         Specification<Article> spec = Specification.where(null);
 
         if (author != null && !author.isEmpty())
-            spec.and((root, _, cb) -> cb.equal(root.get("author"), author));
+            spec.and((root, ignored, cb) -> cb.equal(root.get("author"), author));
 
         if (requiredAge != null)
-            spec.and((root, _, cb) -> cb.equal(root.get("requiredAge"), requiredAge));
+            spec.and((root, ignored, cb) -> cb.equal(root.get("requiredAge"), requiredAge));
 
         Page<Article> page = articleRepository.findAll(spec, pageable);
         return page.stream().map(ArticleMapper::toArticleSummaryDTO).toList();
