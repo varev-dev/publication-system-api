@@ -36,7 +36,7 @@ public class ArticleMapper {
 
         return new ArticleDetailsDTO(article.getTitle(), article.getContent(), article.getAuthor().getUsername(),
                 article.getCreatedAt(), comments.stream().map(comm ->
-                        new CommentDTO(comm.getAuthor().getUsername(), comm.getContent(), comm.getCreatedAt())).toList());
+                        new CommentDTO(comm.getId(), comm.getAuthor().getUsername(), comm.getContent(), comm.getCreatedAt())).toList());
     }
 
     public static Duration durationMapper(int amount, TimeUnit unit) {

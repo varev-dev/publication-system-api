@@ -53,7 +53,10 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/articles").permitAll()
                     .requestMatchers(HttpMethod.GET, "/articles/**").authenticated()
                     .requestMatchers(HttpMethod.POST, "/articles").hasRole("EDITOR")
-                    .requestMatchers(HttpMethod.POST, "/articles/*/comments/**").hasAnyRole("USER", "EDITOR")
+
+                    .requestMatchers(HttpMethod.DELETE, "/articles/*/comments/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/articles/*/comments/**").hasRole("USER")
+
                     .anyRequest().authenticated();
             })
             .csrf(AbstractHttpConfigurer::disable)
